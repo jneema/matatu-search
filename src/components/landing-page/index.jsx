@@ -1,5 +1,14 @@
 import React from "react";
-import { Select, MenuItem, Button, Box, Grid, Stack } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  Button,
+  Box,
+  Grid,
+  Stack,
+  InputLabel,
+  Card,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { SetDestination, SetStartingPoint } from "../../redux/slices/matatu";
 import logo from "../../assets/matatu-hub-high-resolution-logo-transparent.svg";
@@ -29,73 +38,77 @@ const LandingPage = () => {
         position: "absolute",
         top: 0,
         left: 0,
+        backgroundColor: "white",
       }}
     >
-      <form
-        style={{
-          maxWidth: "500px",
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-          borderRadius: "8px",
-          background: "#fff",
-          padding: "20px",
+      <Card
+        sx={{
+          padding: 4,
+          width: "25%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Stack spacing={1}>
-              <img src={logo} />
-            </Stack>
+        <form style={{ width: "100%" }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Stack spacing={1}>
+                <img src={logo} />
+              </Stack>
+            </Grid>
+            <Grid item xs={12}>
+              <Stack spacing={1}>
+                <InputLabel>Select Starting Point</InputLabel>
+                <Select
+                  id="startingPoint"
+                  onChange={handleChange}
+                  name="startingPoint"
+                  style={{ width: "100%" }}
+                  value={startingPoint}
+                  displayEmpty
+                >
+                  <MenuItem value="cbd">CBD</MenuItem>
+                  <MenuItem value="Rongai">Rongai</MenuItem>
+                  <MenuItem value="Kilimani">Kilimani</MenuItem>
+                  <MenuItem value="Roysambu">Roysambu</MenuItem>
+                </Select>
+              </Stack>
+            </Grid>
+            <Grid item xs={12}>
+              <Stack spacing={1}>
+                <InputLabel>Select Destination</InputLabel>
+                <Select
+                  id="destination"
+                  onChange={handleChange}
+                  name="destination"
+                  style={{ width: "100%" }}
+                  value={destination}
+                  displayEmpty
+                >
+                  <MenuItem value="" disabled>
+                    Select Destination
+                  </MenuItem>
+                  <MenuItem value="Rongai">Rongai</MenuItem>
+                  <MenuItem value="Kilimani">Kilimani</MenuItem>
+                  <MenuItem value="Roysambu">Roysambu</MenuItem>
+                </Select>
+              </Stack>
+            </Grid>
+            <Grid item xs={12}>
+              <Stack spacing={1}>
+                <Button
+                  variant="contained"
+                  onClick={() => console.log(destination, startingPoint)}
+                >
+                  Confirm
+                </Button>
+              </Stack>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Stack spacing={1}>
-              <label>Select Starting Point</label>
-              <Select
-                id="startingPoint"
-                onChange={handleChange}
-                name="startingPoint"
-                style={{ width: "100%" }}
-                value={startingPoint}
-                displayEmpty
-              >
-                <MenuItem value="cbd">CBD</MenuItem>
-                <MenuItem value="Rongai">Rongai</MenuItem>
-                <MenuItem value="Kilimani">Kilimani</MenuItem>
-                <MenuItem value="Roysambu">Roysambu</MenuItem>
-              </Select>
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
-            <Stack spacing={1}>
-              <label>Select Destination</label>
-              <Select
-                id="destination"
-                onChange={handleChange}
-                name="destination"
-                style={{ width: "100%" }}
-                value={destination}
-                displayEmpty
-              >
-                <MenuItem value="" disabled>
-                  Select Destination
-                </MenuItem>
-                <MenuItem value="Rongai">Rongai</MenuItem>
-                <MenuItem value="Kilimani">Kilimani</MenuItem>
-                <MenuItem value="Roysambu">Roysambu</MenuItem>
-              </Select>
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
-            <Stack spacing={1}>
-              <Button
-                variant="contained"
-                onClick={() => console.log(destination, startingPoint)}
-              >
-                Confirm
-              </Button>
-            </Stack>
-          </Grid>
-        </Grid>
-      </form>
+        </form>
+      </Card>
     </Box>
   );
 };

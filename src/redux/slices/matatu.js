@@ -1,32 +1,25 @@
-const { createSlice } = require("@reduxjs/toolkit");
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  matatus: [],
-  selectedMatatu: null,
-  routes: [],
-  selectedRoute: null,
+  startingPoint: "cbd",
+  destination: "",
 };
 
 const matatuSlice = createSlice({
   name: "matatus",
   initialState,
   reducers: {
-    fetchMatatus: (state, action) => {
-      state.matatus = action.payload;
+    SetDestination: (state, action) => {
+      state.destination = action.payload;
+      localStorage.setItem("Destination", state.destination);
     },
-    selectMatatu: (state, action) => {
-      state.selectedMatatu = action.payload;
-    },
-    fetchRoutes: (state, action) => {
-      state.routes = action.payload;
-    },
-    selectRoute: (state, action) => {
-      state.selectedRoute = action.payload;
+    SetStartingPoint: (state, action) => {
+      state.startingPoint = action.payload;
+      localStorage.setItem("Starting Point", state.startingPoint);
     },
   },
 });
 
-export const { fetchMatatus, selectMatatu, fetchRoutes, selectRoute } =
-  matatuSlice.actions;
+export const { SetDestination, SetStartingPoint } = matatuSlice.actions;
 
 export default matatuSlice.reducer;

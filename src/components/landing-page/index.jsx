@@ -8,107 +8,114 @@ import {
   Stack,
   InputLabel,
   Card,
+  FormControl,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { SetDestination, SetStartingPoint } from "../../redux/slices/matatu";
+import {
+  SetSelectedMatatuType,
+  SetSelectedRoute,
+} from "../../redux/slices/matatu";
 import logo from "../../assets/matatu-hub-high-resolution-logo-transparent.svg";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
-  const { destination, startingPoint } = useSelector((state) => state.matatus);
+  const navigate = useNavigate();
+  const { selectedRoute, selectedMatatuType } = useSelector(
+    (state) => state.matatus
+  );
+
+  const routes = [
+    "Ngong Road",
+    "Thika Road",
+    "Kiambu Road",
+    "Mombasa Road",
+    "Jogoo Road",
+    "Lang'ata Road",
+    "Waiyaki Way",
+    "Enterprise Road(Industrial Area)",
+  ];
 
   const handleChange = (event) => {
     const { name, value } = event.target;
 
-    if (name === "startingPoint") {
-      dispatch(SetStartingPoint(value));
-    } else if (name === "destination") {
-      dispatch(SetDestination(value));
+    if (name === "selectedRoute") {
+      dispatch(SetSelectedRoute(value));
+    } else if (name === "selectedMatatuType") {
+      dispatch(SetSelectedMatatuType(value));
+    }
+  };
+
+  const handleShowMatatus = () => {
+    if (selectedRoute) {
+      navigate(`/routes/${selectedRoute.replace(/\s+/g, "-").toLowerCase()}`);
     }
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100%",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        backgroundColor: "white",
-      }}
-    >
-      <Card
-        sx={{
-          padding: 4,
-          width: "25%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <form style={{ width: "100%" }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Stack spacing={1}>
-                <img src={logo} />
-              </Stack>
-            </Grid>
-            <Grid item xs={12}>
-              <Stack spacing={1}>
-                <InputLabel>Select Starting Point</InputLabel>
-                <Select
-                  id="startingPoint"
-                  onChange={handleChange}
-                  name="startingPoint"
-                  style={{ width: "100%" }}
-                  value={startingPoint}
-                  displayEmpty
-                >
-                  <MenuItem value="cbd">CBD</MenuItem>
-                  <MenuItem value="Rongai">Rongai</MenuItem>
-                  <MenuItem value="Kilimani">Kilimani</MenuItem>
-                  <MenuItem value="Roysambu">Roysambu</MenuItem>
-                </Select>
-              </Stack>
-            </Grid>
-            <Grid item xs={12}>
-              <Stack spacing={1}>
-                <InputLabel>Select Destination</InputLabel>
-                <Select
-                  id="destination"
-                  onChange={handleChange}
-                  name="destination"
-                  style={{ width: "100%" }}
-                  value={destination}
-                  displayEmpty
-                >
-                  <MenuItem value="" disabled>
-                    Select Destination
-                  </MenuItem>
-                  <MenuItem value="Rongai">Rongai</MenuItem>
-                  <MenuItem value="Kilimani">Kilimani</MenuItem>
-                  <MenuItem value="Roysambu">Roysambu</MenuItem>
-                </Select>
-              </Stack>
-            </Grid>
-            <Grid item xs={12}>
-              <Stack spacing={1}>
-                <Button
-                  variant="contained"
-                  onClick={() => console.log(destination, startingPoint)}
-                >
-                  Confirm
-                </Button>
-              </Stack>
-            </Grid>
+    <Box sx={{ margin: { lg: "0 150px 0 150px", sm: "0 40px 0 40px" } }}>
+      <form>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Stack spacing={1}>
+              <img src={logo} />
+            </Stack>
           </Grid>
-        </form>
-      </Card>
+
+          <Grid item xs={12}>
+            <Stack spacing={1}>
+              <FormControl fullWidth>
+                <InputLabel id="selectedRoute">Select Route</InputLabel>
+                <Select
+                  labelId="selectedRoute"
+                  id="selectedRoute"
+                  name="selectedRoute"
+                  value={selectedRoute}
+                  label="Select Route"
+                  onChange={handleChange}
+                  displayEmpty
+                  fullWidth
+                >
+                  {routes.map((route) => (
+                    <MenuItem key={route} value={route}>
+                      {route}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Stack spacing={1}>
+              <FormControl fullWidth>
+                <InputLabel id="selectedCarType">Select Matatu Type</InputLabel>
+                <Select
+                  labelId="selectedMatatuType"
+                  id="selectedMatatuType"
+                  name="selectedMatatuType"
+                  value={selectedMatatuType}
+                  label="Select Matatu Type"
+                  onChange={handleChange}
+                  displayEmpty
+                  fullWidth
+                >
+                  <MenuItem value="nissan">Nissan</MenuItem>
+                  <MenuItem value="bus">Bus</MenuItem>
+                </Select>
+              </FormControl>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Stack spacing={1}>
+              <Button variant="contained" onClick={() => handleShowMatatus()}>
+                Confirm
+              </Button>
+            </Stack>
+          </Grid>
+        </Grid>
+      </form>
     </Box>
   );
 };
